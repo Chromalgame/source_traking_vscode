@@ -1,0 +1,32 @@
+{
+  "name": "source-traking-vscode",
+  "displayName": "Source Tracking",
+  "description": "Petite desciption simple",
+  "version": "1.0.0",
+  "main": "./out/extension.js",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.runCustomCommand",
+        "title": "KPC: Source Traking"
+      }
+    ]
+  },
+  "activationEvents": [
+    "onCommand:extension.runCustomCommand"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/vscode": "^1.98.0"
+  }
+}
