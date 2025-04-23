@@ -53,7 +53,6 @@ function activate(context) {
         { label: "Pull l'ensemble des fichiers", command: "sf project retrieve start" },
         { label: "Push l'ensemble des fichiers", command: "sf project deploy start" },
         { label: "Activer le source traking", command: "sf org enable tracking" },
-        { label: "Reset le traking", command: "sf project reset tracking" },
         { label: "Reset le traking", command: "sf project reset tracking" }
     ];
     let disposable = vscode.commands.registerCommand('extension.runCustomCommand', () => __awaiter(this, void 0, void 0, function* () {

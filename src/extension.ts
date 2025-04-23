@@ -8,7 +8,6 @@ export function activate(context: vscode.ExtensionContext) {
         { label: "Pull l'ensemble des fichiers", command: "sf project retrieve start" },
         { label: "Push l'ensemble des fichiers", command: "sf project deploy start" },
         { label: "Activer le source traking", command: "sf org enable tracking" },
-        { label: "Reset le traking", command: "sf project reset tracking" },
         { label: "Reset le traking", command: "sf project reset tracking" }
     ];
 
