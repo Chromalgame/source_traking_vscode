@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 
+let terminal: vscode.Terminal | undefined;
+
 export function activate(context: vscode.ExtensionContext) {
-    // Liste des commandes disponibles
     const commands = [
         { label: "Liste des fichiers à pull", command: "sf project retrieve preview" },
         { label: "Liste des fichiers à push", command: "sf project deploy preview" },
@@ -11,16 +12,18 @@ export function activate(context: vscode.ExtensionContext) {
         { label: "Reset le traking", command: "sf project reset tracking" }
     ];
 
-    let disposable = vscode.commands.registerCommand('extension.runCustomCommand', async () => {
+    const disposable = vscode.commands.registerCommand('extension.runCustomCommand', async () => {
         const selected = await vscode.window.showQuickPick(
             commands.map(cmd => cmd.label),
             { placeHolder: "Choisissez une commande à exécuter" }
         );
-        
+
         if (selected) {
             const cmd = commands.find(c => c.label === selected)?.command;
             if (cmd) {
-                const terminal = vscode.window.createTerminal("Commande Personnalisée");
+                if (!terminal) {
+                    terminal = vscode.window.createTerminal("Commande Personnalisée");
+                }
                 terminal.show();
                 terminal.sendText(cmd);
             }
@@ -29,5 +32,3 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable);
 }
-
-export function deactivate() {}

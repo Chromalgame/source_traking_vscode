@@ -43,10 +43,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = activate;
-exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
+let terminal;
 function activate(context) {
-    // Liste des commandes disponibles
     const commands = [
         { label: "Liste des fichiers à pull", command: "sf project retrieve preview" },
         { label: "Liste des fichiers à push", command: "sf project deploy preview" },
@@ -55,13 +54,15 @@ function activate(context) {
         { label: "Activer le source traking", command: "sf org enable tracking" },
         { label: "Reset le traking", command: "sf project reset tracking" }
     ];
-    let disposable = vscode.commands.registerCommand('extension.runCustomCommand', () => __awaiter(this, void 0, void 0, function* () {
+    const disposable = vscode.commands.registerCommand('extension.runCustomCommand', () => __awaiter(this, void 0, void 0, function* () {
         var _a;
         const selected = yield vscode.window.showQuickPick(commands.map(cmd => cmd.label), { placeHolder: "Choisissez une commande à exécuter" });
         if (selected) {
             const cmd = (_a = commands.find(c => c.label === selected)) === null || _a === void 0 ? void 0 : _a.command;
             if (cmd) {
-                const terminal = vscode.window.createTerminal("Commande Personnalisée");
+                if (!terminal) {
+                    terminal = vscode.window.createTerminal("Commande Personnalisée");
+                }
                 terminal.show();
                 terminal.sendText(cmd);
             }
@@ -69,4 +70,3 @@ function activate(context) {
     }));
     context.subscriptions.push(disposable);
 }
-function deactivate() { }
