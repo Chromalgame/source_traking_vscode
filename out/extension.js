@@ -47,26 +47,52 @@ const vscode = __importStar(require("vscode"));
 let terminal;
 function activate(context) {
     const commands = [
-        { label: `Liste des fichiers à pull`, command: `sf project retrieve preview` },
-        { label: `Liste des fichiers à push`, command: `sf project deploy preview` },
-        { label: `Pull l'ensemble des fichiers`, command: `sf project retrieve start` },
-        { label: `Push l'ensemble des fichiers`, command: `sf project deploy start` },
+        {
+            label: `Liste des fichiers à pull`,
+            command: `sf project retrieve preview`,
+        },
+        {
+            label: `Liste des fichiers à push`,
+            command: `sf project deploy preview`,
+        },
+        {
+            label: `Pull l'ensemble des fichiers`,
+            command: `sf project retrieve start`,
+        },
+        {
+            label: `Push l'ensemble des fichiers`,
+            command: `sf project deploy start`,
+        },
         { label: `Activer le source traking`, command: `sf org enable tracking` },
         { label: `Reset le traking`, command: `sf project reset tracking` },
-        { label: `Get log`, command: `sfdx force:apex:log:tail --color` },
-        { label: `Get user debug log`, command: `sfdx force:apex:log:tail --color | Select-String "USER_DEBUG"` },
+        {
+            label: `Get log`,
+            command: `sfdx force:apex:log:tail --color`,
+            newTerminal: true,
+        },
+        {
+            label: `Get user debug log`,
+            command: `sfdx force:apex:log:tail --color | Select-String "USER_DEBUG"`,
+            newTerminal: true,
+        },
     ];
-    const disposable = vscode.commands.registerCommand('extension.runCustomCommand', () => __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        const selected = yield vscode.window.showQuickPick(commands.map(cmd => cmd.label), { placeHolder: "Choisissez une commande à exécuter" });
+    const disposable = vscode.commands.registerCommand("extension.runCustomCommand", () => __awaiter(this, void 0, void 0, function* () {
+        const selected = yield vscode.window.showQuickPick(commands.map((cmd) => cmd.label), { placeHolder: "Choisissez une commande à exécuter" });
         if (selected) {
-            const cmd = (_a = commands.find(c => c.label === selected)) === null || _a === void 0 ? void 0 : _a.command;
-            if (cmd) {
-                if (!terminal) {
-                    terminal = vscode.window.createTerminal("Commande Personnalisée");
+            const cmdObj = commands.find((c) => c.label === selected);
+            if (cmdObj && cmdObj.command) {
+                if (cmdObj.newTerminal) {
+                    const newTerm = vscode.window.createTerminal(`Commande: ${cmdObj.label}`);
+                    newTerm.show();
+                    newTerm.sendText(cmdObj.command);
                 }
-                terminal.show();
-                terminal.sendText(cmd);
+                else {
+                    if (!terminal) {
+                        terminal = vscode.window.createTerminal("Commande Personnalisée");
+                    }
+                    terminal.show();
+                    terminal.sendText(cmdObj.command);
+                }
             }
         }
     }));
